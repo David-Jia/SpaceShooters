@@ -6,7 +6,7 @@ int main(int argc, char** argv){
 	sf::Event event;
 
 	sf::Font font;
-	if (!font.loadFromFile("xeron.ttf"))
+	if (!font.loadFromFile("Xeron.ttf"))
 		return 42;
 
 	sf::Text text("Space Shooters", font, 64);
