@@ -20,7 +20,7 @@ class Enemy{
 		Enemy(sf::Texture& texture, int points, int health);
 
 		sf::Sprite& getSprite();
-		int getPoints();
+		int getPoints();	
 		int getHealth();
 		bool isDead();
 
