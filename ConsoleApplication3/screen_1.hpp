@@ -15,6 +15,10 @@ private:
 	sf::Texture enemyPic;
 	sf::Sprite player;
 	sf::Texture playerPic;
+	sf::Sprite playerBullet;
+	sf::Sprite enemyBullet;
+	sf::Texture playBullet;
+	sf::Texture enemBullet;
 public: 
 	Screen_1(void);
 	virtual int Run(sf::RenderWindow &App);
@@ -26,6 +30,8 @@ Screen_1::Screen_1(void)
 	float enemyPosY = 100;
 	float playerPosx = 400;
 	float playerPosY = 550;
+	float playerBulletPosx = playerPosx;
+	float playerBulletPosy = playerPosY;
 	enemyPic.loadFromFile("Images/Enemy.png");
 	for (int i = 0; i < 50; i++)
 	{
@@ -38,6 +44,11 @@ Screen_1::Screen_1(void)
 			enemyPosY += 50;
 		}
 	}
+	playBullet.loadFromFile("Images/PlayerBullet.png");
+	playerBullet.setTexture(playBullet, true);
+	//playerBullet.setPosition(400, 500);
+	enemBullet.loadFromFile("Images/EnemyBullet.png");
+	enemyBullet.setTexture(enemBullet, true);
 	playerPic.loadFromFile("Images/Player.png");
 	player.setTexture(playerPic, true);
 	player.setPosition(400, 550);
@@ -52,7 +63,9 @@ int Screen_1::Run(sf::RenderWindow &App)
 	sf::Event Event; 
 	float playerPosx = 400;
 	float playerPosY = 550;
-
+    float playerBulletPosx = playerPosx;
+	float playerBulletPosy = playerPosY;
+	
 	bool isRunning = true;
 
 	while (isRunning)
@@ -75,8 +88,15 @@ int Screen_1::Run(sf::RenderWindow &App)
             	playerPosx += 10;
             }
                  
-            //if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-           		//bullet fires;
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+           	{
+           	    playerBullet.setPosition(playerPosx, playerPosY);
+           		for(int i = 0; i < 80; i++)
+           		{
+           		    playerBullet.move(0,-1);
+           		    playerBulletPosy -= 10;
+           		}
+           	}
 		}
 
 		App.clear();
@@ -85,6 +105,7 @@ int Screen_1::Run(sf::RenderWindow &App)
 		{
 			App.draw(enemy[i]);
 		}
+		App.draw(playerBullet);
 		App.draw(player);
 		App.display();
 	}
