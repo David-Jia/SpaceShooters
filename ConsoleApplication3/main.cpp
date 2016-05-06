@@ -17,6 +17,10 @@ int main(int argc, char** argv)
 
 	Screens.push_back(&s0);
 
+	Screen_1 s1;
+
+	Screens.push_back(&s1);
+
 	while (screen >= 0)
 	{
 		screen = Screens[screen]->Run(App);
