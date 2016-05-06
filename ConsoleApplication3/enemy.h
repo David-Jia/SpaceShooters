@@ -17,7 +17,6 @@ class Enemy{
 
 	public:
 		Enemy();
-		Enemy(sf::Texture& texture, int points, int health);
 
 		sf::Sprite& getSprite();
 		int getPoints();	

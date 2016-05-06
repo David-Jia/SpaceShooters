@@ -89,6 +89,7 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="screens.hpp" />
     <ClInclude Include="screen_0.hpp" />
+    <ClInclude Include="screen_1.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -34,13 +34,13 @@ int Screen_0::Run(sf::RenderWindow &App)
 
 	title.setFont(font);
 	title.setColor(sf::Color::White);
-	title.setCharacterSize(64);
+	title.setCharacterSize(48);
 	title.setString("Space Shooters");
-	title.setPosition(200, 100);
+	title.setPosition(110, 100);
 
 	start.setFont(font);
 	start.setColor(sf::Color::White);
-	start.setCharacterSize(32);
+	start.setCharacterSize(24);
 	start.setString("Press enter to start");
 	start.setPosition(200, 400);
 
@@ -58,6 +58,8 @@ int Screen_0::Run(sf::RenderWindow &App)
 				if (sf::Keyboard::Return)
 				{
 					isPlaying = true;
+
+					return (1);
 				}
 
 				/*else

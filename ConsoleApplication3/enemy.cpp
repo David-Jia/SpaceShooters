@@ -3,12 +3,7 @@
 
 Enemy::Enemy()
 {
-	cout << "This shouldn't have ran." << endl;
-}
-
-Enemy::Enemy(sf::Texture& texture, int points, int health)
-{
-	enemyTexture.loadFromFile("/images/Enemy.png");
+	enemyTexture.loadFromFile("Images/Enemy.png");
 	enemySprite.setTexture(enemyTexture, true);
 	points = 100;
 	health = 3;
