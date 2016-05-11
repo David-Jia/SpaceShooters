@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -19,6 +21,8 @@ private:
 	sf::Sprite enemyBullet[50];
 	sf::Texture playBullet;
 	sf::Texture enemBullet;
+	int enemyShotChance[50];
+	bool enemyBulletPresent[50];
 public: 
 	Screen_1(void);
 	virtual int Run(sf::RenderWindow &App);
@@ -57,6 +61,24 @@ Screen_1::Screen_1(void)
 	player.setPosition(400, 550);
 	bg.loadFromFile("Images/spaceBackground.jpg");
 	background.setTexture(bg, true);
+	for (int i = 0; i < 50; i++)
+	{
+		if (i % 6 == 0)
+			enemyShotChance[i] = 0;
+		else if (i % 5 == 0)
+			enemyShotChance[i] = 1;
+		else if (i % 4 == 0)
+			enemyShotChance[i] = 2;
+		else if (i % 3 == 0)
+			enemyShotChance[i] = 3;
+		else if (i % 2 == 0)
+			enemyShotChance[i] = 4;
+	}
+
+	for (int i = 0; i < 50; i++)
+	{
+		enemyBulletPresent[i] = false;
+	}
 
 
 }
@@ -64,13 +86,17 @@ Screen_1::Screen_1(void)
 int Screen_1::Run(sf::RenderWindow &App)
 {
 	sf::Event Event; 
-	float playerPosx = 400;
+	float playerPosX = 400;
 	float playerPosY = 550;
-    float playerBulletPosx = playerPosx;
-	float playerBulletPosy = playerPosY;
+    float playerBulletPosX = playerPosX;
+	float playerBulletPosY = playerPosY;
+	int bulletFiredBy = 0;
 	bool bulletPresent = false;
+	bool enemyBulletFired = false;
+	bool resetEnemyBullet = false;
 	float enemyMoveValue = 2;
 	bool enemyMoveRight = false;
+	int enemyBulletDuration = 2000;
 	
 	bool isRunning = true;
 
@@ -82,26 +108,76 @@ int Screen_1::Run(sf::RenderWindow &App)
 			{
 				return -1;
 			}
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playerPosx > 0)
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playerPosX > 0)
 			{
 				player.move(-10,0);
-				playerPosx -= 10;
+				playerPosX -= 10;
 			}
                 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playerPosx < 770)
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playerPosX < 770)
             {
             	player.move(10,0);
-            	playerPosx += 10;
+            	playerPosX += 10;
             }
                  
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !bulletPresent)
            	{
-           	    playerBullet.setPosition(playerPosx, playerPosY);
-				playerBulletPosx = playerPosx;
-				playerBulletPosy = playerPosY;
+           	    playerBullet.setPosition(playerPosX, playerPosY);
+				playerBulletPosX = playerPosX;
+				playerBulletPosY = playerPosY;
 				bulletPresent = true;
            	}
 		}
+
+		srand(time(0));
+
+		if (!enemyBulletFired)
+		{
+			bulletFiredBy = (rand() % 5);
+			enemyBulletFired = true;
+		}
+
+		if (enemyBulletFired)
+		{
+			for (int i = 0; i < 50; i++)
+			{
+				if ((enemyShotChance[i] == bulletFiredBy) && !resetEnemyBullet)
+				{
+					enemyBulletPresent[i] = true;
+				}
+			}
+
+			for (int i = 0; i < 50; i++)
+			{
+				if (enemyBulletPresent[i] && !resetEnemyBullet)
+				{
+					enemyBullet[i].setPosition(enemy[i].getPosition());
+				}
+			}
+
+			resetEnemyBullet = true;
+		}
+		
+		for (int i = 0; i < 50; i++)
+		{
+			if (enemyBulletPresent[i])
+				enemyBullet[i].move(0, 0.25);
+		}
+
+		if (enemyBulletDuration < 0)
+		{
+			resetEnemyBullet = false;
+			enemyBulletDuration = 2000;
+			enemyBulletFired = false;
+			for (int i = 0; i < 50; i++)
+			{
+				enemyBulletPresent[i] = false;
+			}
+		}
+
+		enemyBulletDuration--;
+		
+		
 
 		if (enemyMoveValue < 0)
 			enemyMoveRight = true;
@@ -132,10 +208,10 @@ int Screen_1::Run(sf::RenderWindow &App)
 		if (bulletPresent)
 		{
 			playerBullet.move(0, -0.5);
-			playerBulletPosy -= 0.5;
+			playerBulletPosY -= 0.5;
 		}
 
-		if (playerBulletPosy < 0)
+		if (playerBulletPosY < 0)
 			bulletPresent = false;
 
 		App.clear();
@@ -149,6 +225,12 @@ int Screen_1::Run(sf::RenderWindow &App)
 
 		if (bulletPresent)
 			App.draw(playerBullet);
+		
+		for (int i = 0; i < 50; i++)
+		{
+			if (enemyBulletPresent[i])
+				App.draw(enemyBullet[i]);
+		}
 
 		App.draw(player);
 		App.display();
