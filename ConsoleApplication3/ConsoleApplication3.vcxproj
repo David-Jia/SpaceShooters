@@ -81,12 +81,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cScreen.h" />
-    <ClInclude Include="enemy.h" />
+    <ClInclude Include="enemy.hpp" />
     <ClInclude Include="screens.hpp" />
     <ClInclude Include="startScreen.hpp" />
     <ClInclude Include="gameScreen.hpp" />

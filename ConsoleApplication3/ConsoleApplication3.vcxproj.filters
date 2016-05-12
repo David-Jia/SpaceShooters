@@ -15,17 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enemy.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="cScreen.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -36,6 +30,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="gameScreen.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

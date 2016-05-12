@@ -1,5 +1,5 @@
 #include "cScreen.h"
-#include "enemy.h"
+#include "enemy.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
@@ -11,10 +11,9 @@ using namespace std;
 class gameScreen : public CScreen
 {
 private:
-	sf::Sprite enemy[50];
+	Enemy enemy[50];
 	sf::Texture bg;
 	sf::Sprite background;
-	sf::Texture enemyPic;
 	sf::Sprite player;
 	sf::Texture playerPic;
 	sf::Sprite playerBullet;
@@ -32,15 +31,13 @@ gameScreen::gameScreen(void)
 {
 	float enemyPosX = 150;
 	float enemyPosY = 100;
-	float playerPosx = 400;
+	float playerPosx = 400; 
 	float playerPosY = 550;
 	float playerBulletPosx = playerPosx;
 	float playerBulletPosy = playerPosY;
-	enemyPic.loadFromFile("Images/Enemy.png");
 	for (int i = 0; i < 50; i++)
 	{
-		enemy[i].setTexture(enemyPic, true);
-		enemy[i].setPosition(enemyPosX, enemyPosY);
+		enemy[i].getSprite().setPosition(enemyPosX, enemyPosY);
 		enemyPosX += 50;
 		if (enemyPosX == 650)
 		{
@@ -143,7 +140,7 @@ int gameScreen::Run(sf::RenderWindow &App)
 			{
 				if (enemyBulletPresent[i] && !resetEnemyBullet)
 				{
-					enemyBullet[i].setPosition(enemy[i].getPosition());
+					enemyBullet[i].setPosition(enemy[i].getSprite().getPosition());
 				}
 			}
 
@@ -181,7 +178,7 @@ int gameScreen::Run(sf::RenderWindow &App)
 		{
 			for (int i = 0; i < 50; i++)
 			{
-				enemy[i].move(0.005, 0);
+				enemy[i].getSprite().move(0.005, 0);
 			}
 
 			enemyMoveValue += 0.0005;
@@ -191,7 +188,7 @@ int gameScreen::Run(sf::RenderWindow &App)
 		{
 			for (int i = 0; i < 50; i++)
 			{
-				enemy[i].move(-0.005, 0);
+				enemy[i].getSprite().move(-0.005, 0);
 			}
 
 			enemyMoveValue -= 0.0005;
@@ -212,7 +209,7 @@ int gameScreen::Run(sf::RenderWindow &App)
 
 		for (int i = 0; i < 50; i++)
 		{
-			App.draw(enemy[i]);
+			App.draw(enemy[i].getSprite());
 		}
 
 		if (bulletPresent)

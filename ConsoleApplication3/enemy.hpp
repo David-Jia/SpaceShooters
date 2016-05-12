@@ -1,7 +1,4 @@
-#ifndef ENEMY_H_INCLUDED
-#define ENEMY_H_INCLUDED
 #include "SFML/Graphics.hpp"
-//#include "Bullet.h"
 
 using namespace std;
 
@@ -20,11 +17,21 @@ class Enemy{
 
 		sf::Sprite& getSprite();
 		int getPoints();	
-		int getHealth();
-		bool isDead();
-
-		void shoot();
-		void hit();
 };
 
-#endif //ENEMY_H_INCLUDED
+Enemy::Enemy()
+{
+	enemyTexture.loadFromFile("Images/Enemy.png");
+	enemySprite.setTexture(enemyTexture, true);
+	points = 100;
+}
+
+sf::Sprite& Enemy::getSprite()
+{
+	return enemySprite;
+}
+
+int Enemy::getPoints()
+{
+	return points;
+}
