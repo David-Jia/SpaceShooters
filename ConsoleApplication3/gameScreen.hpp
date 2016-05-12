@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class Screen_1 : public CScreen
+class gameScreen : public CScreen
 {
 private:
 	sf::Sprite enemy[50];
@@ -24,11 +24,11 @@ private:
 	int enemyShotChance[50];
 	bool enemyBulletPresent[50];
 public: 
-	Screen_1(void);
+	gameScreen(void);
 	virtual int Run(sf::RenderWindow &App);
 };
 
-Screen_1::Screen_1(void)
+gameScreen::gameScreen(void)
 {
 	float enemyPosX = 150;
 	float enemyPosY = 100;
@@ -61,20 +61,7 @@ Screen_1::Screen_1(void)
 	player.setPosition(400, 550);
 	bg.loadFromFile("Images/spaceBackground.jpg");
 	background.setTexture(bg, true);
-	for (int i = 0; i < 50; i++)
-	{
-		if (i % 6 == 0)
-			enemyShotChance[i] = 0;
-		else if (i % 5 == 0)
-			enemyShotChance[i] = 1;
-		else if (i % 4 == 0)
-			enemyShotChance[i] = 2;
-		else if (i % 3 == 0)
-			enemyShotChance[i] = 3;
-		else if (i % 2 == 0)
-			enemyShotChance[i] = 4;
-	}
-
+	
 	for (int i = 0; i < 50; i++)
 	{
 		enemyBulletPresent[i] = false;
@@ -83,7 +70,7 @@ Screen_1::Screen_1(void)
 
 }
 
-int Screen_1::Run(sf::RenderWindow &App)
+int gameScreen::Run(sf::RenderWindow &App)
 {
 	sf::Event Event; 
 	float playerPosX = 400;
@@ -96,7 +83,7 @@ int Screen_1::Run(sf::RenderWindow &App)
 	bool resetEnemyBullet = false;
 	float enemyMoveValue = 2;
 	bool enemyMoveRight = false;
-	int enemyBulletDuration = 2000;
+	int enemyBulletDuration = 5000;
 	
 	bool isRunning = true;
 
@@ -131,9 +118,14 @@ int Screen_1::Run(sf::RenderWindow &App)
 
 		srand(time(0));
 
+		for (int i = 0; i < 50; i++)
+		{
+			enemyShotChance[i] = rand() % 10;
+		}
+
 		if (!enemyBulletFired)
 		{
-			bulletFiredBy = (rand() % 5);
+			bulletFiredBy = (rand() % 10);
 			enemyBulletFired = true;
 		}
 
@@ -161,13 +153,13 @@ int Screen_1::Run(sf::RenderWindow &App)
 		for (int i = 0; i < 50; i++)
 		{
 			if (enemyBulletPresent[i])
-				enemyBullet[i].move(0, 0.25);
+				enemyBullet[i].move(0, 0.10);
 		}
 
 		if (enemyBulletDuration < 0)
 		{
 			resetEnemyBullet = false;
-			enemyBulletDuration = 2000;
+			enemyBulletDuration = 5000;
 			enemyBulletFired = false;
 			for (int i = 0; i < 50; i++)
 			{

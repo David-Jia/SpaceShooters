@@ -5,22 +5,22 @@
 
 using namespace std;
 
-class Screen_0 : public CScreen
+class startScreen : public CScreen
 {
 private:
 	bool isPlaying;
 
 public:
-	Screen_0(void);
+	startScreen(void);
 	virtual int Run(sf::RenderWindow &App);
 };
 
-Screen_0::Screen_0(void)
+startScreen::startScreen(void)
 {
 	isPlaying = false;
 }
 
-int Screen_0::Run(sf::RenderWindow &App)
+int startScreen::Run(sf::RenderWindow &App)
 {
 	sf::Event Event;
 	bool isRunning = true;

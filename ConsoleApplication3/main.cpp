@@ -13,11 +13,11 @@ int main(int argc, char** argv)
 
 	sf::RenderWindow App(sf::VideoMode(800, 600, 32), "Space Shooters");
 
-	Screen_0 s0;
+	startScreen s0;
 
 	Screens.push_back(&s0);
 
-	Screen_1 s1;
+	gameScreen s1;
 
 	Screens.push_back(&s1);
 

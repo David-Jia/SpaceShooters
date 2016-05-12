@@ -88,8 +88,8 @@
     <ClInclude Include="cScreen.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="screens.hpp" />
-    <ClInclude Include="screen_0.hpp" />
-    <ClInclude Include="screen_1.hpp" />
+    <ClInclude Include="startScreen.hpp" />
+    <ClInclude Include="gameScreen.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

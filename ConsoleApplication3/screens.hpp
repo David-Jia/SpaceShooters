@@ -3,8 +3,8 @@
 
 #include "cScreen.h"
 
-#include "screen_0.hpp"
+#include "startScreen.hpp"
 
-#include "screen_1.hpp"
+#include "gameScreen.hpp"
 
 #endif // SCREENS_HPP_INCLUDED

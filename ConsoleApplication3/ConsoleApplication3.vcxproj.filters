@@ -29,13 +29,13 @@
     <ClInclude Include="cScreen.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="screen_0.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="screens.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="screen_1.hpp">
+    <ClInclude Include="startScreen.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameScreen.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
