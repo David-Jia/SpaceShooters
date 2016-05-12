@@ -86,6 +86,9 @@
   <ItemGroup>
     <ClInclude Include="cScreen.h" />
     <ClInclude Include="enemy.hpp" />
+    <ClInclude Include="enemyBullet.hpp" />
+    <ClInclude Include="player.hpp" />
+    <ClInclude Include="playerBullet.hpp" />
     <ClInclude Include="screens.hpp" />
     <ClInclude Include="startScreen.hpp" />
     <ClInclude Include="gameScreen.hpp" />

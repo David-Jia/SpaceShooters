@@ -35,5 +35,14 @@
     <ClInclude Include="enemy.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="player.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="playerBullet.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyBullet.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

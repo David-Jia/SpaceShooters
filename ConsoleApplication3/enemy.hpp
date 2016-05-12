@@ -9,12 +9,8 @@ class Enemy{
 		int points,
 			health;
 
-		sf::Clock bulletReload;
-		float bulletReloadRate;
-
 	public:
 		Enemy();
-
 		sf::Sprite& getSprite();
 		int getPoints();	
 };

@@ -1,5 +1,6 @@
 #include "cScreen.h"
 #include "enemy.hpp"
+#include "player.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
@@ -14,8 +15,7 @@ private:
 	Enemy enemy[50];
 	sf::Texture bg;
 	sf::Sprite background;
-	sf::Sprite player;
-	sf::Texture playerPic;
+	Player player;
 	sf::Sprite playerBullet;
 	sf::Sprite enemyBullet[50];
 	sf::Texture playBullet;
@@ -53,9 +53,8 @@ gameScreen::gameScreen(void)
 	{
 		enemyBullet[i].setTexture(enemBullet, true);
 	}
-	playerPic.loadFromFile("Images/Player.png");
-	player.setTexture(playerPic, true);
-	player.setPosition(400, 550);
+	
+	player.getSprite().setPosition(400, 550);
 	bg.loadFromFile("Images/spaceBackground.jpg");
 	background.setTexture(bg, true);
 	
@@ -94,13 +93,13 @@ int gameScreen::Run(sf::RenderWindow &App)
 			}
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playerPosX > 0)
 			{
-				player.move(-10,0);
+				player.getSprite().move(-10,0);
 				playerPosX -= 10;
 			}
                 
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playerPosX < 770)
             {
-            	player.move(10,0);
+            	player.getSprite().move(10,0);
             	playerPosX += 10;
             }
                  
@@ -221,7 +220,7 @@ int gameScreen::Run(sf::RenderWindow &App)
 				App.draw(enemyBullet[i]);
 		}
 
-		App.draw(player);
+		App.draw(player.getSprite());
 		App.display();
 	}
 
