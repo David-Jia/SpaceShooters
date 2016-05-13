@@ -44,5 +44,8 @@
     <ClInclude Include="enemyBullet.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rect.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

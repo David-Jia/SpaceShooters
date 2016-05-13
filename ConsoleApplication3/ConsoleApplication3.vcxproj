@@ -89,6 +89,7 @@
     <ClInclude Include="enemyBullet.hpp" />
     <ClInclude Include="player.hpp" />
     <ClInclude Include="playerBullet.hpp" />
+    <ClInclude Include="Rect.hpp" />
     <ClInclude Include="screens.hpp" />
     <ClInclude Include="startScreen.hpp" />
     <ClInclude Include="gameScreen.hpp" />

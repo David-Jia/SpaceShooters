@@ -7,18 +7,25 @@ class Enemy{
 		sf::Sprite enemySprite;
 		sf::Texture enemyTexture;
 		int points;
+		bool isAlive;
 
 	public:
+		// Constructors
 		Enemy();
+		// Getters
 		sf::Sprite& getSprite();
 		int getPoints();	
+		bool getIsAlive();
+		// Setters
+		void setIsAlive(bool alive);
 };
 
 Enemy::Enemy()
 {
 	enemyTexture.loadFromFile("Images/Enemy.png");
 	enemySprite.setTexture(enemyTexture, true);
-	points = 100;
+	points = 10;
+	isAlive = true;
 }
 
 sf::Sprite& Enemy::getSprite()
@@ -30,3 +37,14 @@ int Enemy::getPoints()
 {
 	return points;
 }
+
+bool Enemy::getIsAlive()
+{
+	return isAlive;
+}
+
+void Enemy::setIsAlive(bool alive)
+{
+	isAlive = alive;
+}
+
