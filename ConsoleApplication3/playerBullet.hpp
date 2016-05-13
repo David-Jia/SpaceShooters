@@ -22,7 +22,7 @@ class PlayerBullet
 PlayerBullet::PlayerBullet()
 {
 	playerBulletTexture.loadFromFile("Images/PlayerBullet.png");
-	playerBuletSprite.setTexture(playerBulletTexture, true);
+	playerBulletSprite.setTexture(playerBulletTexture, true);
 	bulletPresent = true;
 }
 						

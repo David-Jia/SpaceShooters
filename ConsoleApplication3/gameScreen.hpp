@@ -1,6 +1,7 @@
 #include "cScreen.h"
 #include "enemy.hpp"
 #include "player.hpp"
+#include "playerBullet.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
@@ -196,7 +197,7 @@ int gameScreen::Run(sf::RenderWindow &App)
 		}
 
 		if (playerBulletPosY < 0)
-			playerBullet.getBulletPresent(false);
+			playerBullet.setBulletPresent(false);
 
 		App.clear();
 
