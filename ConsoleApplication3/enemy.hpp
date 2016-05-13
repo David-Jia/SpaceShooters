@@ -6,8 +6,7 @@ class Enemy{
 	private:
 		sf::Sprite enemySprite;
 		sf::Texture enemyTexture;
-		int points,
-			health;
+		int points;
 
 	public:
 		Enemy();

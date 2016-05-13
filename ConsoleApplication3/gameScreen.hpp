@@ -16,9 +16,8 @@ private:
 	sf::Texture bg;
 	sf::Sprite background;
 	Player player;
-	sf::Sprite playerBullet;
+	PlayerBullet playerBullet;
 	sf::Sprite enemyBullet[50];
-	sf::Texture playBullet;
 	sf::Texture enemBullet;
 	int enemyShotChance[50];
 	bool enemyBulletPresent[50];
@@ -45,8 +44,6 @@ gameScreen::gameScreen(void)
 			enemyPosY += 50;
 		}
 	}
-	playBullet.loadFromFile("Images/PlayerBullet.png");
-	playerBullet.setTexture(playBullet, true);
 	//playerBullet.setPosition(400, 500);
 	enemBullet.loadFromFile("Images/EnemyBullet.png");
 	for (int i = 0; i < 50; i++)
@@ -74,7 +71,6 @@ int gameScreen::Run(sf::RenderWindow &App)
     float playerBulletPosX = playerPosX;
 	float playerBulletPosY = playerPosY;
 	int bulletFiredBy = 0;
-	bool bulletPresent = false;
 	bool enemyBulletFired = false;
 	bool resetEnemyBullet = false;
 	float enemyMoveValue = 2;
@@ -103,12 +99,12 @@ int gameScreen::Run(sf::RenderWindow &App)
             	playerPosX += 10;
             }
                  
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !bulletPresent)
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !playerBullet.getBulletPresent())
            	{
-           	    playerBullet.setPosition(playerPosX, playerPosY);
+           	    playerBullet.getSprite().setPosition(playerPosX, playerPosY);
 				playerBulletPosX = playerPosX;
 				playerBulletPosY = playerPosY;
-				bulletPresent = true;
+				playerBullet.setBulletPresent(true);
            	}
 		}
 
@@ -193,14 +189,14 @@ int gameScreen::Run(sf::RenderWindow &App)
 			enemyMoveValue -= 0.0005;
 		}
 
-		if (bulletPresent)
+		if (playerBullet.getBulletPresent())
 		{
-			playerBullet.move(0, -0.5);
+			playerBullet.getSprite().move(0, -0.5);
 			playerBulletPosY -= 0.5;
 		}
 
 		if (playerBulletPosY < 0)
-			bulletPresent = false;
+			playerBullet.getBulletPresent(false);
 
 		App.clear();
 
@@ -211,8 +207,8 @@ int gameScreen::Run(sf::RenderWindow &App)
 			App.draw(enemy[i].getSprite());
 		}
 
-		if (bulletPresent)
-			App.draw(playerBullet);
+		if (playerBullet.getBulletPresent())
+			App.draw(playerBullet.getSprite());
 		
 		for (int i = 0; i < 50; i++)
 		{
