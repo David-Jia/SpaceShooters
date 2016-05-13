@@ -8,6 +8,8 @@ class Enemy{
 		sf::Texture enemyTexture;
 		int points;
 		bool isAlive;
+		bool enemyInvincible = false;
+		int enemyInvincibilityTime = 500;
 
 	public:
 		// Constructors
@@ -16,8 +18,14 @@ class Enemy{
 		sf::Sprite& getSprite();
 		int getPoints();	
 		bool getIsAlive();
+		bool getEnemyInvincible();
+		int getEnemyInvincibilityTime();
 		// Setters
 		void setIsAlive(bool alive);
+		void setEnemyInvincible(bool invincible);
+		void setEnemyInvincibilityTime(int invinciblitytime);
+		// Other Methods
+		void decreaseInvincibilityTime();
 };
 
 Enemy::Enemy()
@@ -43,8 +51,32 @@ bool Enemy::getIsAlive()
 	return isAlive;
 }
 
+bool Enemy::getEnemyInvincible()
+{
+	return enemyInvincible;
+}
+
+int Enemy::getEnemyInvincibilityTime()
+{
+	return enemyInvincibilityTime;
+}
+
 void Enemy::setIsAlive(bool alive)
 {
 	isAlive = alive;
 }
 
+void Enemy::setEnemyInvincible(bool invincible)
+{
+	enemyInvincible = invincible;
+}
+
+void Enemy::setEnemyInvincibilityTime(int invincibilityTime)
+{
+	enemyInvincibilityTime = invincibilityTime;
+}
+
+void Enemy::decreaseInvincibilityTime()
+{
+	enemyInvincibilityTime--;
+}

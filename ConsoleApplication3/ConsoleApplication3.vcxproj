@@ -87,6 +87,7 @@
     <ClInclude Include="cScreen.h" />
     <ClInclude Include="enemy.hpp" />
     <ClInclude Include="enemyBullet.hpp" />
+    <ClInclude Include="gameOverScreen.hpp" />
     <ClInclude Include="player.hpp" />
     <ClInclude Include="playerBullet.hpp" />
     <ClInclude Include="Rect.hpp" />

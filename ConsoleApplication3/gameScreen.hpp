@@ -4,8 +4,8 @@
 #include "enemyBullet.hpp"
 #include "playerBullet.hpp"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Rect.hpp"
-#include <iostream>
 #include <string>
 #include <cstdlib>
 #include <ctime>
@@ -23,6 +23,9 @@ private:
     EnemyBullet enemyBullet[40];
     int enemyShotChance[40];
     bool enemyBulletPresent[40];
+	sf::SoundBuffer normalBuffer;
+	sf::SoundBuffer hardBuffer;
+	sf::Sound sound;
 public:
     gameScreen(void);
     virtual int Run(sf::RenderWindow &App);
@@ -57,6 +60,9 @@ gameScreen::gameScreen(void)
 	bg.loadFromFile("Images/spaceBackground.jpg");
 	background.setTexture(bg, true);
 
+	normalBuffer.loadFromFile("Audio/CytusR-VitMaster-Sakuzyo.ogg");
+	hardBuffer.loadFromFile("Audio/Cytus09-DevilinWonderland-VILA[ChapterRRetro_.ogg");
+	sound.setBuffer(normalBuffer);
 	
 }
 
@@ -67,38 +73,31 @@ int gameScreen::Run(sf::RenderWindow &App)
 	sf::Font font;
 	sf::Text score;
 	sf::Text level;
+	sf::Text goodLuck;
+	sound.play();
+	sound.setLoop(true);
+
 	int points = 0;
 	int levelNumber = 1;
 
 	if (!font.loadFromFile("Xeron.ttf"))
 		return -1;
 
-	score.setFont(font);
-	score.setColor(sf::Color::White);
-	score.setCharacterSize(12);
-	score.setString("Score: " + to_string(points));
-	score.setPosition(680, 550);
-
-	level.setFont(font);
-	level.setColor(sf::Color::White);
-	level.setCharacterSize(12);
-	level.setString("Level: " + to_string(levelNumber));
-	level.setPosition(680, 525);
-
     float playerPosX = 400;
     float playerPosY = 550;
     float playerBulletPosX = playerPosX;
     float playerBulletPosY = playerPosY;
-    int bulletFiredBy = 0;
+    int bulletFiredBy = 0;	
     bool enemyBulletFired = false;
     bool resetEnemyBullet = false;
     float enemyMoveValue = 2;
     bool enemyMoveRight = false;
     int enemyBulletDuration = 5000;
 	int enemyBulletDurationLevel = 5000;
-	float enemyBulletSpeed = 0.10;
+	float enemyBulletSpeed = 0.20;
 	int enemyFireChance = 10;
 	bool checkRemainingEnemies;
+	bool songChance = false;
 
     bool isRunning = true;
 
@@ -130,6 +129,31 @@ int gameScreen::Run(sf::RenderWindow &App)
 					playerBullet.setBulletPresent(true);
                }
         }
+
+		if (!songChance && levelNumber > 3)
+		{
+			songChance = true;
+			sound.setBuffer(hardBuffer);
+			sound.play();
+		}
+
+		score.setFont(font);
+		score.setColor(sf::Color::White);
+		score.setCharacterSize(10);
+		score.setString("Score: " + to_string(points));
+		score.setPosition(700, 550);
+
+		level.setFont(font);
+		level.setColor(sf::Color::White);
+		level.setCharacterSize(10);
+		level.setString("Level: " + to_string(levelNumber));
+		level.setPosition(700, 525);	
+
+		goodLuck.setFont(font);
+		goodLuck.setColor(sf::Color::Red);
+		goodLuck.setCharacterSize(80);
+		goodLuck.setString("GOOD LUCK");
+		goodLuck.setPosition(100, 300);
 
         srand(time(0));
 
@@ -186,11 +210,11 @@ int gameScreen::Run(sf::RenderWindow &App)
         
 		for (int i = 0; i < 40; i++)
 		{
-			if (playerBullet.getSprite().getGlobalBounds().intersects(enemy[i].getSprite().getGlobalBounds()) && enemy[i].getIsAlive())
+			if (playerBullet.getSprite().getGlobalBounds().intersects(enemy[i].getSprite().getGlobalBounds()) && enemy[i].getIsAlive() && !enemy[i].getEnemyInvincible())
 			{
 				enemy[i].setIsAlive(false);
 				points += enemy[i].getPoints();
-				playerBullet.setBulletPresent(false);
+				//playerBullet.setBulletPresent(false);
 			}
 		}
 
@@ -202,17 +226,7 @@ int gameScreen::Run(sf::RenderWindow &App)
 			}
 		}
 
-		score.setFont(font);
-		score.setColor(sf::Color::White);
-		score.setCharacterSize(10);
-		score.setString("Score: " + to_string(points));
-		score.setPosition(700, 550);
-
-		level.setFont(font);
-		level.setColor(sf::Color::White);
-		level.setCharacterSize(10);
-		level.setString("Level: " + to_string(levelNumber));
-		level.setPosition(700, 525);
+		
 
         if (enemyMoveValue < 0)
             enemyMoveRight = true;
@@ -273,6 +287,23 @@ int gameScreen::Run(sf::RenderWindow &App)
 		App.draw(score);
 		App.draw(level);
 
+		if (levelNumber > 3)
+			App.draw(goodLuck);
+
+		if (enemy[0].getEnemyInvincible() && enemy[0].getEnemyInvincibilityTime() > 0)
+		{
+			enemy[0].decreaseInvincibilityTime();
+		}
+
+		if (enemy[0].getEnemyInvincibilityTime() == 0)
+		{
+			for (int i = 0; i < 40; i++)
+			{
+				enemy[i].setEnemyInvincible(false);
+				enemy[i].setEnemyInvincibilityTime(500);
+			}
+		}
+
 		checkRemainingEnemies = false;
 
 		for (int i = 0; i < 40; i++)
@@ -283,11 +314,14 @@ int gameScreen::Run(sf::RenderWindow &App)
 
 		if (!checkRemainingEnemies)
 		{
+			playerBullet.setBulletPresent(false);
+
+			for (int i = 0; i < 40; i++)
+				enemy[i].setEnemyInvincible(true);
+
 			levelNumber++;
-			if (enemyFireChance > 2)
-				enemyFireChance -= 2;
-			if (enemyFireChance == 2 && levelNumber > 5)
-				enemyFireChance -= 1;
+			if (enemyFireChance > 1)
+				enemyFireChance -= 3;
 			if (enemyBulletDuration > 1000)
 				enemyBulletDurationLevel -= 1000;
 			if (enemyBulletDuration == 1000 && levelNumber == 6)
@@ -295,7 +329,7 @@ int gameScreen::Run(sf::RenderWindow &App)
 			if (enemyBulletDuration == 500 && levelNumber == 8)
 				enemyBulletDuration -= 250;
 			if (enemyBulletSpeed < 3)
-				enemyBulletSpeed += 0.10;
+				enemyBulletSpeed += 0.20;
 
 			for (int i = 0; i < 40; i++)
 			{
@@ -306,7 +340,7 @@ int gameScreen::Run(sf::RenderWindow &App)
         App.display();
     }
 
-    return 0;
+    return -1;
 }
 
 

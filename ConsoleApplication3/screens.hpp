@@ -7,4 +7,6 @@
 
 #include "gameScreen.hpp"
 
+#include "gameOverScreen.hpp"
+
 #endif // SCREENS_HPP_INCLUDED

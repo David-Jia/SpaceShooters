@@ -47,5 +47,8 @@
     <ClInclude Include="Rect.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="gameOverScreen.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
