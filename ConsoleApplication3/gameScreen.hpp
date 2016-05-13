@@ -214,7 +214,7 @@ int gameScreen::Run(sf::RenderWindow &App)
 			{
 				enemy[i].setIsAlive(false);
 				points += enemy[i].getPoints();
-				//playerBullet.setBulletPresent(false);
+				playerBullet.setBulletPresent(false);
 			}
 		}
 
@@ -257,8 +257,8 @@ int gameScreen::Run(sf::RenderWindow &App)
 
         if (playerBullet.getBulletPresent())
         {
-            playerBullet.getSprite().move(0, -.75);
-            playerBulletPosY -= .75;
+            playerBullet.getSprite().move(0, -1);
+            playerBulletPosY -= 1;
         }
 
         if (playerBulletPosY < 0)
