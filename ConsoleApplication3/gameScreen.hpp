@@ -3,6 +3,7 @@
 #include "player.hpp"
 #include "enemyBullet.hpp"
 #include "playerBullet.hpp"
+#include "points.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Rect.hpp"
@@ -12,7 +13,7 @@
 
 using namespace std;
 
-class gameScreen : public CScreen
+class GameScreen : public CScreen
 {
 private:
     Enemy enemy[40];
@@ -22,16 +23,15 @@ private:
     PlayerBullet playerBullet;
     EnemyBullet enemyBullet[40];
     int enemyShotChance[40];
-    bool enemyBulletPresent[40];
 	sf::SoundBuffer normalBuffer;
 	sf::SoundBuffer hardBuffer;
 	sf::Sound sound;
 public:
-    gameScreen(void);
+    GameScreen(void);
     virtual int Run(sf::RenderWindow &App);
 };
 
-gameScreen::gameScreen(void)
+GameScreen::GameScreen(void)
 {
 	float enemyPosX = 150;
 	float enemyPosY = 100;
@@ -52,11 +52,6 @@ gameScreen::gameScreen(void)
 
 	player.getSprite().setPosition(400, 550);
 
-	for (int i = 0; i < 40; i++)
-	{
-		enemyBulletPresent[i] = false;
-	}
-
 	bg.loadFromFile("Images/spaceBackground.jpg");
 	background.setTexture(bg, true);
 
@@ -66,7 +61,7 @@ gameScreen::gameScreen(void)
 	
 }
 
-int gameScreen::Run(sf::RenderWindow &App)
+int GameScreen::Run(sf::RenderWindow &App)
 {
     sf::Event Event;
 
@@ -74,10 +69,12 @@ int gameScreen::Run(sf::RenderWindow &App)
 	sf::Text score;
 	sf::Text level;
 	sf::Text goodLuck;
+	sf::Text timer;
+	sf::Text life;
 	sound.play();
 	sound.setLoop(true);
 
-	int points = 0;
+	int playerPoints = points;
 	int levelNumber = 1;
 
 	if (!font.loadFromFile("Xeron.ttf"))
@@ -98,6 +95,7 @@ int gameScreen::Run(sf::RenderWindow &App)
 	int enemyFireChance = 10;
 	bool checkRemainingEnemies;
 	bool songChance = false;
+	int timeLeft = 100000;
 
     bool isRunning = true;
 
@@ -109,16 +107,16 @@ int gameScreen::Run(sf::RenderWindow &App)
             {
                 return -1;
             }
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playerPosX > 100)
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playerPosX > 120)
             {
-                player.getSprite().move(-10,0);
-                playerPosX -= 10;
+                player.getSprite().move(-15,0);
+                playerPosX -= 15;
             }
                
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playerPosX < 670)
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playerPosX < 660)
             {
-                player.getSprite().move(10,0);
-                playerPosX += 10;
+                player.getSprite().move(15,0);
+                playerPosX += 15;
             }
                 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !playerBullet.getBulletPresent())
@@ -155,6 +153,18 @@ int gameScreen::Run(sf::RenderWindow &App)
 		goodLuck.setString("GOOD LUCK");
 		goodLuck.setPosition(100, 300);
 
+		timer.setFont(font);
+		timer.setColor(sf::Color::White);
+		timer.setCharacterSize(10);
+		timer.setString("Time: " + to_string(timeLeft));
+		timer.setPosition(700, 575);
+
+		life.setFont(font);
+		life.setColor(sf::Color::White);
+		life.setCharacterSize(16);
+		life.setString("Lives: " + to_string(player.getLives()));
+		life.setPosition(700, 500);
+
         srand(time(0));
 
         for (int i = 0; i < 40; i++)
@@ -174,13 +184,13 @@ int gameScreen::Run(sf::RenderWindow &App)
             {
                 if ((enemyShotChance[i] == bulletFiredBy) && !resetEnemyBullet && enemy[i].getIsAlive())
                 {
-                    enemyBulletPresent[i] = true;
+                    enemyBullet[i].setEnemyBulletPresent(true);
                 }
             }
 
             for (int i = 0; i < 40; i++)
             {
-                if (enemyBulletPresent[i] && !resetEnemyBullet)
+                if (enemyBullet[i].getEnemyBulletPresent() && !resetEnemyBullet)
                 {
                     enemyBullet[i].getSprite().setPosition(enemy[i].getSprite().getPosition());
                 }
@@ -191,7 +201,7 @@ int gameScreen::Run(sf::RenderWindow &App)
        
         for (int i = 0; i < 40; i++)
         {
-			if (enemyBulletPresent[i])
+			if (enemyBullet[i].getEnemyBulletPresent())
 				enemyBullet[i].getSprite().move(0, enemyBulletSpeed);
         }
 
@@ -202,7 +212,7 @@ int gameScreen::Run(sf::RenderWindow &App)
             enemyBulletFired = false;
             for (int i = 0; i < 40; i++)
             {
-                enemyBulletPresent[i] = false;
+                enemyBullet[i].setEnemyBulletPresent(false);
             }
         }
 
@@ -210,20 +220,32 @@ int gameScreen::Run(sf::RenderWindow &App)
         
 		for (int i = 0; i < 40; i++)
 		{
-			if (playerBullet.getSprite().getGlobalBounds().intersects(enemy[i].getSprite().getGlobalBounds()) && enemy[i].getIsAlive() && !enemy[i].getEnemyInvincible())
+			if (playerBullet.getSprite().getGlobalBounds().intersects(enemy[i].getSprite().getGlobalBounds()) && enemy[i].getIsAlive() && playerBullet.getBulletPresent() && !enemy[i].getEnemyInvincible())
 			{
 				enemy[i].setIsAlive(false);
-				points += enemy[i].getPoints();
+				playerPoints += enemy[i].getPoints();
 				playerBullet.setBulletPresent(false);
 			}
 		}
 
 		for (int i = 0; i < 40; i++)
 		{
-			if (player.getSprite().getGlobalBounds().intersects(enemyBullet[i].getSprite().getGlobalBounds()))
+			if (player.getSprite().getGlobalBounds().intersects(enemyBullet[i].getSprite().getGlobalBounds()) && enemyBullet[i].getEnemyBulletPresent())
 			{
-				isRunning = false;
+				enemyBullet[i].setEnemyBulletPresent(false);
+				player.removeLife();
+				if (player.getLives() == 0)
+					isRunning = false;
 			}
+		}
+
+		if (time == 0)
+		{
+			player.removeLife();
+			if (player.getLives() == 0)
+				isRunning = false;
+
+			timeLeft = 100000;
 		}
 
 		
@@ -237,20 +259,50 @@ int gameScreen::Run(sf::RenderWindow &App)
 
         if (enemyMoveRight)
         {
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 10; i++)
             {
                 enemy[i].getSprite().move(0.02, 0);
             }
+
+			for (int i = 10; i < 20; i++)
+			{
+				enemy[i].getSprite().move(-0.02, 0);
+			}
+
+			for (int i = 20; i < 30; i++)
+			{
+				enemy[i].getSprite().move(0.02, 0);
+			}
+
+			for (int i = 30; i < 40; i++)
+			{
+				enemy[i].getSprite().move(-0.02, 0);
+			}
 
             enemyMoveValue += 0.0010;
         }
 
         if (!enemyMoveRight)
         {
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 10; i++)
             {
                 enemy[i].getSprite().move(-0.02, 0);
             }
+
+			for (int i = 10; i < 20; i++)
+			{
+				enemy[i].getSprite().move(0.02, 0);
+			}
+
+			for (int i = 20; i < 30; i++)
+			{
+				enemy[i].getSprite().move(-0.02, 0);
+			}
+
+			for (int i = 30; i < 40; i++)
+			{
+				enemy[i].getSprite().move(0.02, 0);
+			}
 
             enemyMoveValue -= 0.0010;
         }
@@ -263,6 +315,8 @@ int gameScreen::Run(sf::RenderWindow &App)
 
         if (playerBulletPosY < 0)
             playerBullet.setBulletPresent(false);
+
+		timeLeft--;
 
         App.clear();
 
@@ -279,7 +333,7 @@ int gameScreen::Run(sf::RenderWindow &App)
        
         for (int i = 0; i < 40; i++)
         {
-            if (enemyBulletPresent[i])
+            if (enemyBullet[i].getEnemyBulletPresent())
                 App.draw(enemyBullet[i].getSprite());
         }
 
@@ -335,12 +389,16 @@ int gameScreen::Run(sf::RenderWindow &App)
 			{
 				enemy[i].setIsAlive(true);
 			}
+			timeLeft = 100000;
 		}
+		points = playerPoints;
 
+		App.draw(life);
+		App.draw(timer);
         App.display();
     }
 
-    return -1;
+    return 2;
 }
 
 

@@ -4,29 +4,28 @@
 
 using namespace std;
 
-class startScreen : public CScreen
+class StartScreen : public CScreen
 {
 private:
-	bool isPlaying;
+	bool isRunning;
 
 public:
-	startScreen(void);
+	StartScreen(void);
 	virtual int Run(sf::RenderWindow &App);
 };
 
-startScreen::startScreen(void)
+StartScreen::StartScreen(void)
 {
-	isPlaying = false;
+	isRunning = false;
 }
 
-int startScreen::Run(sf::RenderWindow &App)
+int StartScreen::Run(sf::RenderWindow &App)
 {
 	sf::Event Event;
-	bool isRunning = true;
+	isRunning = true;
 	sf::Font font;
 	sf::Text title;
 	sf::Text start;
-	int menu = 0;
 
 	if (!font.loadFromFile("Xeron.ttf"))
 		return -1;
@@ -55,16 +54,7 @@ int startScreen::Run(sf::RenderWindow &App)
 			if (Event.type == sf::Event::KeyPressed)
 			{
 				if (sf::Keyboard::Return)
-				{
-					isPlaying = true;
-
-					return (1);
-				}
-
-				/*else
-				{
-				return -1;
-				}*/
+					isRunning = false;
 			}
 		}
 
@@ -75,5 +65,5 @@ int startScreen::Run(sf::RenderWindow &App)
 
 		App.display();
 	}
-	return 0;
+	return 1;
 }

@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="points.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cScreen.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="gameOverScreen.hpp" />
     <ClInclude Include="player.hpp" />
     <ClInclude Include="playerBullet.hpp" />
+    <ClInclude Include="points.h" />
     <ClInclude Include="Rect.hpp" />
     <ClInclude Include="screens.hpp" />
     <ClInclude Include="startScreen.hpp" />
