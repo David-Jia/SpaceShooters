@@ -6,10 +6,10 @@ class Enemy{
 	private:
 		sf::Sprite enemySprite;
 		sf::Texture enemyTexture;
-		int points;
+		int points; // how much the enemy is worth
 		bool isAlive;
 		bool enemyInvincible;
-		int enemyInvincibilityTime;
+		int enemyInvincibilityTime; // how long the enemy stays invincible
 
 	public:
 		// Constructors
@@ -26,6 +26,9 @@ class Enemy{
 		void setEnemyInvincibilityTime(int invinciblitytime);
 		// Other Methods
 		void decreaseInvincibilityTime();
+		// Summary: Decreases the enemyInvincibilityTime int by 1 each time this function is called
+		// Precondition: Function needs to be called on an enemy object
+		// Postcondition: The enemyInvinccibilityTime of the enemy object decreases by 1
 };
 
 Enemy::Enemy()

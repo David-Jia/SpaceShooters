@@ -7,12 +7,13 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	vector<CScreen*> Screens;
+	vector<CScreen*> Screens; // creates a vector of the screens that would be run
 
-	int screen = 0;
+	int screen = 0; // starts the screen at 0
 
 	sf::RenderWindow App(sf::VideoMode(800, 600, 32), "Space Shooters");
 
+	// Plays the first screen, then the second screen, and finally the third screen
 	StartScreen s0;
 
 	Screens.push_back(&s0);
@@ -25,7 +26,7 @@ int main(int argc, char** argv)
 
 	Screens.push_back(&s2);
 
-	while (screen >= 0)
+	while (screen >= 0) // makes sure that each screen is run and the game does not abruptly end early
 	{
 		screen = Screens[screen]->Run(App);
 	}

@@ -1,3 +1,4 @@
+// Needed to use the SFML intersects function
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)

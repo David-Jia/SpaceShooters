@@ -7,7 +7,7 @@ class EnemyBullet
 private:
     sf::Sprite enemyBulletSprite;
     sf::Texture enemyBulletTexture;
-	bool enemyBulletPresent;
+	bool enemyBulletPresent; // is true if the enemy Bullet is active on screen
 
 public:
     //Constructors

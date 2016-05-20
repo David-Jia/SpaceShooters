@@ -18,6 +18,9 @@ class Player
 		int getLives();
 		// Other Methods
 		void removeLife();
+		// Summary: Reduces the number of lives the player object has by 1
+		// Precondition: A player class object needs to call this function
+		// Postcondition: The player class object that called this function has it's lives attribute decreased by 1
 
 };
 

@@ -7,7 +7,7 @@ class PlayerBullet
 	private:
 		sf::Sprite playerBulletSprite;
 		sf::Texture playerBulletTexture;
-		bool bulletPresent;
+		bool bulletPresent; // is true if the bullet is active on screen
 		
 	public:
 		//Constructors

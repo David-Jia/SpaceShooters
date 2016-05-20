@@ -1,3 +1,4 @@
+// End screen, the last screen that is displayed
 #include "cScreen.h"
 #include "points.h"
 #include <SFML/Graphics.hpp>
@@ -9,6 +10,7 @@ class GameOverScreen : public CScreen
 {
 	private: 
 		bool isRunning;
+		// Needed to create a pseudo gif
 		sf::Texture playerDeathTexture1;
 		sf::Texture playerDeathTexture2;
 		sf::Texture playerDeathTexture3;
@@ -37,6 +39,9 @@ class GameOverScreen : public CScreen
 	public:
 		GameOverScreen(void);
 		virtual int Run(sf::RenderWindow &App);
+		// Summary: This function runs the event that appear in the screen
+		// Precondition: Takes in a number that determines which virtual Run class will run
+		// Postcondition: The screen number that corresponds with the input will run
 };
 
 GameOverScreen::GameOverScreen(void)
@@ -87,7 +92,8 @@ int GameOverScreen::Run(sf::RenderWindow &App)
 {
 	sf::Event Event;
 	sf::Font font;
-	int gifTimer = 1800;
+	int gameOverTimer = 2500; // Made so that the user would not instantly close the game over screen
+	int gifTimer = 1800; // used to determine which sprite is currently displayed
 	isRunning = true;
 	
 	if (!font.loadFromFile("Xeron.ttf"))
@@ -96,7 +102,7 @@ int GameOverScreen::Run(sf::RenderWindow &App)
 	sf::Text gameOver;
 	sf::Text score;
 
-	int finalScore = points;
+	int finalScore = points; // gotten from the points.h to display points received in the gameScreen.hpp file
 
 	gameOver.setFont(font);
 	gameOver.setColor(sf::Color::Red);
@@ -114,22 +120,23 @@ int GameOverScreen::Run(sf::RenderWindow &App)
 	{
 		while (App.pollEvent(Event))
 		{
-			if (Event.type == sf::Event::Closed)
+			if (Event.type == sf::Event::Closed) // closes the program if the user presses the x button
 			{
 				return -1;
 			}
 
-			if (Event.type == sf::Event::KeyPressed)
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && gameOverTimer < 0) // closes the program is the user pressed enter after a few seconds
 			{
-				if (sf::Keyboard::Return)
 					isRunning = false;
 			}
 		}
 
 		gifTimer--;
+		gameOverTimer--;
 
 		App.clear();
 
+		// Creates the pseudo gif by displaying a different sprite once each condition is met
 		if (gifTimer > 1650)
 			App.draw(playerDeathSprite1);
 		else if (gifTimer > 1500)
